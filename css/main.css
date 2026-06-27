@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Science Gothic';
+    src: url('../fonts/ScienceGothic.ttf') format('truetype'); /* Укажи точное имя своего файла */
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Science Gothic', sans-serif; /* Теперь он подхватит локальный файл */
+    margin: 0;
+    color: white;
+    background-color: black;
+}
+
 body {
   font-family: "Science Gothic", "Science Gothic";
   margin: 0;
