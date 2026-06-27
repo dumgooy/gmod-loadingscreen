@@ -43,7 +43,10 @@ Config.announcementLength = 3000;
  */
 Config.backgroundImages = [
   "bg1.jpg",
-  "bg2.jpg"
+  "bg2.jpg",
+  "bg3.jpg",
+  "bg4.jpg",
+  "bg5.jpg"
 ];
 
 /**
@@ -55,7 +58,7 @@ Config.enableDebug = false;
  * прив
  */
  
-Config.musicTracks = [
+ Config.musicTracks = [
   "track1.mp3",
   "track2.mp3",
   "track3.mp3",

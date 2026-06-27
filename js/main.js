@@ -141,37 +141,6 @@ function loadBackground() {
     }, 10000); // 10 секунд
   }
 }
-function loadMusic() {
-  if (!Config.musicTracks || Config.musicTracks.length === 0) {
-    return;
-  }
-
-  const audio = new Audio();
-  let lastTrack = -1;
-
-  function playRandomTrack() {
-    let nextTrack;
-
-    do {
-      nextTrack = Math.floor(
-        Math.random() * Config.musicTracks.length
-      );
-    } while (
-      Config.musicTracks.length > 1 &&
-      nextTrack === lastTrack
-    );
-
-    lastTrack = nextTrack;
-
-    audio.src = "music/" + Config.musicTracks[nextTrack];
-    audio.volume = 0.3;
-    audio.play();
-  }
-
-  audio.addEventListener("ended", playRandomTrack);
-
-  playRandomTrack();
-}
 function setLoad(percentage) {
   debug(percentage + "%");
   $(".overhaul").css("left", percentage + "%");
@@ -252,3 +221,30 @@ $(document).ready(function() {
     }
   }, 1000);
 });
+
+
+function loadMusic() {
+  if (!Config.musicTracks || Config.musicTracks.length === 0) return;
+
+  // Случайный трек из списка
+  var track = Config.musicTracks[Math.floor(Math.random() * Config.musicTracks.length)];
+  var audio = new Audio("music/" + track);
+  
+  audio.volume = 0.3; // Громкость от 0 до 1
+  audio.loop = true;  // Зациклить трек
+  
+  // Попытка автовоспроизведения
+  var playPromise = audio.play();
+  
+  if (playPromise !== undefined) {
+    playPromise.then(_ => {
+      debug("Музыка играет: " + track);
+    }).catch(error => {
+      debug("Автовоспроизведение заблокировано браузером");
+      // Добавляем обработчик на клик, если автоплей не сработал
+      document.body.addEventListener('click', function() {
+        audio.play();
+      }, { once: true });
+    });
+  }
+}
