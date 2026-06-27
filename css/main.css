@@ -38,7 +38,7 @@ h1 {
 }
 #history {
   position: absolute;
-  text-align: left;
+  text-align: center;
   width: 100%;
   color: rgb(240, 240, 240);
   text-shadow: none;
@@ -62,7 +62,7 @@ h1 {
   transition-duration: 1s;
 }
 .title {
-  text-align: left;
+  text-align: center;
   top: 40%;
   width: 100%;
   position: absolute;
