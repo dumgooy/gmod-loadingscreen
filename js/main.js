@@ -118,12 +118,59 @@ function loadAll() {
   }, 10000);
 }
 function loadBackground() {
-  if (Config.backgroundImage) {
+  if (Config.backgroundImages && Config.backgroundImages.length > 0) {
+
+    let current = 0;
+
     $(".background").css(
       "background-image",
-      'url("images/' + Config.backgroundImage + '")'
+      'url("images/' + Config.backgroundImages[0] + '")'
     );
+
+    setInterval(function () {
+      current++;
+      if (current >= Config.backgroundImages.length) {
+        current = 0;
+      }
+
+      $(".background").css(
+        "background-image",
+        'url("images/' + Config.backgroundImages[current] + '")'
+      );
+
+    }, 10000); // 10 секунд
   }
+}
+function loadMusic() {
+  if (!Config.musicTracks || Config.musicTracks.length === 0) {
+    return;
+  }
+
+  const audio = new Audio();
+  let lastTrack = -1;
+
+  function playRandomTrack() {
+    let nextTrack;
+
+    do {
+      nextTrack = Math.floor(
+        Math.random() * Config.musicTracks.length
+      );
+    } while (
+      Config.musicTracks.length > 1 &&
+      nextTrack === lastTrack
+    );
+
+    lastTrack = nextTrack;
+
+    audio.src = "music/" + Config.musicTracks[nextTrack];
+    audio.volume = 0.3;
+    audio.play();
+  }
+
+  audio.addEventListener("ended", playRandomTrack);
+
+  playRandomTrack();
 }
 function setLoad(percentage) {
   debug(percentage + "%");
@@ -153,7 +200,8 @@ function debug(message) {
 $(document).ready(function() {
   // load everything in when ready
   loadBackground();
-
+  loadMusic();
+  
   // print announcement messages every few seconds
   if (
     Config.announceMessages &&

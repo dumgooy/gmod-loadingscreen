@@ -41,9 +41,23 @@ Config.announcementLength = 3000;
  * Image Filename
  * DROP IMAGE IN "images" FOLDER
  */
-Config.backgroundImage = "";
+Config.backgroundImages = [
+  "bg1.jpg",
+  "bg2.jpg"
+];
 
 /**
  * Enable debug messages?
  */
 Config.enableDebug = false;
+
+/**
+ * прив
+ */
+ 
+Config.musicTracks = [
+  "track1.mp3",
+  "track2.mp3",
+  "track3.mp3",
+  "track4.mp3"
+];
