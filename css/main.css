@@ -1,22 +1,22 @@
 @font-face {
     font-family: 'Science Gothic';
-    src: url('../fonts/ScienceGothic.ttf') format('truetype'); /* Укажи точное имя своего файла */
-    font-weight: normal;
+    /* Убедись, что путь к файлу верный */
+    src: url('../fonts/ScienceGothic.ttf') format('truetype');
+    font-weight: 200; /* Явно задаем, что этот файл - это "тонкий" вес */
     font-style: normal;
 }
 
 body {
-    font-family: 'Science Gothic', sans-serif; /* Теперь он подхватит локальный файл */
+    font-family: 'Science Gothic', sans-serif;
+    font-weight: 200; /* Принудительно ставим тонкий вес для всего текста */
     margin: 0;
     color: white;
     background-color: black;
 }
 
-body {
-  font-family: "Science Gothic", "Science Gothic";
-  margin: 0;
-  color: white;
-  background-color: black;
+/* Обязательно сбрасываем жирность у заголовков, иначе они будут толстыми */
+h1, h2, #title {
+    font-weight: 200 !important; 
 }
 
 nav,
