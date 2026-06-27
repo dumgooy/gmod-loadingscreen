@@ -27,8 +27,8 @@ Config.enableAnnouncements = true;
  * only works if enableAnnouncements = true
  */
 Config.announceMessages = [
-  "Enjoy your stay!",
-  "This loading screen is made by Exsite."
+  "Мы все умрем.",
+  "Никто не выживет."
 ];
 
 /**
