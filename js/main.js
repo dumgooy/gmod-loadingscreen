@@ -105,17 +105,7 @@ function SetStatusChanged(status) {
 function loadAll() {
   $("nav").fadeIn();
   $("main").fadeIn();
-
-  // first time loading if DownloadingFile isn't called after some time
-  setTimeout(function() {
-    debug("Checking if first time loading.. " + downloadingFileCalled);
-    if (downloadingFileCalled) {
-      announce(
-        "Грузим мамиксы...",
-        true
-      );
-    }
-  }, 10000);
+ 
 }
 function loadBackground() {
   if (Config.backgroundImages && Config.backgroundImages.length > 0) {
@@ -173,22 +163,30 @@ $(document).ready(function() {
   
   // print announcement messages every few seconds
   if (
-    Config.announceMessages &&
-    Config.enableAnnouncements &&
-    Config.announcementLength
-  ) {
-    if (Config.announceMessages.length > 0) {
-      var i = 0;
-      setInterval(function() {
-        announce(Config.announceMessages[i]);
-        i++;
-        if (i > Config.announceMessages.length - 1) {
-          i = 0;
-        }
-      }, Config.announcementLength);
-    }
-  }
+  Config.announceMessages &&
+  Config.enableAnnouncements &&
+  Config.announcementLength
+) {
+  if (Config.announceMessages.length > 0) {
+    let lastIndex = -1;
 
+    setInterval(function() {
+      let randomIndex;
+
+      do {
+        randomIndex = Math.floor(
+          Math.random() * Config.announceMessages.length
+        );
+      } while (
+        Config.announceMessages.length > 1 &&
+        randomIndex === lastIndex
+      );
+
+      lastIndex = randomIndex;
+      announce(Config.announceMessages[randomIndex]);
+    }, Config.announcementLength);
+  }
+}
   // if it isn't loaded by gmod load manually
   setTimeout(function() {
     if (!isGmod) {
@@ -226,24 +224,42 @@ $(document).ready(function() {
 function loadMusic() {
   if (!Config.musicTracks || Config.musicTracks.length === 0) return;
 
-  // Случайный трек из списка
-  var track = Config.musicTracks[Math.floor(Math.random() * Config.musicTracks.length)];
-  var audio = new Audio("music/" + track);
+  // Берем случайный объект из списка
+  var trackData = Config.musicTracks[Math.floor(Math.random() * Config.musicTracks.length)];
+  var audio = new Audio("music/" + trackData.file);
   
   audio.volume = 0.3; // Громкость от 0 до 1
   audio.loop = true;  // Зациклить трек
   
+  // Функция для вывода текста на экран
+  function showTrackInfo() {
+    if (trackData.name && trackData.author) {
+      // Проверяем, задан ли цвет в конфиге. Если нет — ставим белый по умолчанию
+      var trackColor = trackData.color ? trackData.color : "#ffffff";
+      
+      // Применяем цвет и динамическое свечение (text-shadow) под этот цвет
+      var formattedText = "Сейчас играет:   " + 
+                          "<span class='track-name' style='color: " + trackColor + " !important; text-shadow: 0 0 10px " + trackColor + " !important;'>" + trackData.name + "</span>" + 
+                          " - " + 
+                          "<span class='track-author'>" + trackData.author + "</span>";
+                          
+      $("#music-info").html(formattedText).fadeIn();
+    }
+  }
+
   // Попытка автовоспроизведения
   var playPromise = audio.play();
   
   if (playPromise !== undefined) {
     playPromise.then(_ => {
-      debug("Музыка играет: " + track);
+      debug("Музыка играет: " + trackData.file);
+      showTrackInfo();
     }).catch(error => {
       debug("Автовоспроизведение заблокировано браузером");
-      // Добавляем обработчик на клик, если автоплей не сработал
+      // Добавляем обработчик на клик, если автоплей в браузере не сработал
       document.body.addEventListener('click', function() {
         audio.play();
+        showTrackInfo();
       }, { once: true });
     });
   }
